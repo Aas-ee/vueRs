@@ -131,6 +131,31 @@ export default {
         }
       });
     },
+    updatePosition() {
+      this.$refs.zw_form.validate((valid) => {
+        if (valid) {
+          this.loading = true
+          this.form.updateFlag = "yes"
+          this.$axios.post('/position/save', qs.stringify(this.form)).then((res) => {
+            if (res.data.code == 200) {
+              this.loading = false
+              this.$message.success("上传成功！~~~~~~~~~~")
+              // this.form={}
+              this.load()
+              this.$refs.zw_form.resetFields()
+            } else {
+              this.$message.error('上传失败，参数不合法或有重复~~~')
+              this.loading = false
+            }
+          }).catch((error) => {
+            this.$message.error("系统异常")
+          })
+        } else {
+          this.$message.error('请输入所有字段！')
+          return false;
+        }
+      });
+    },
   }
 }
 </script>

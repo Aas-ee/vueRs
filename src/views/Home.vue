@@ -14,6 +14,7 @@
 
 <script>
 import * as echarts from 'echarts';
+import 'echarts-gl';
 
 
 export default {
@@ -48,56 +49,41 @@ export default {
         }
       })
 
-    // var ROOT_PATH = 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples';
-    // var lineDom = document.getElementById('line');
-    // var lineChart = echarts.init(lineDom);
-    // var option;
-    // lineChart.showLoading();
-    // $.get(ROOT_PATH + '/data/asset/data/flare.json', function (data) {
-    //   lineChart.hideLoading();
-    //   data.children.forEach(function (datum, index) {
-    //     index % 2 === 0 && (datum.collapsed = true);
-    //   });
-    //   lineChart.setOption(
-    //       (option = {
-    //         tooltip: {
-    //           trigger: 'item',
-    //           triggerOn: 'mousemove'
-    //         },
-    //         series: [
-    //           {
-    //             type: 'tree',
-    //             data: [data],
-    //             top: '1%',
-    //             left: '7%',
-    //             bottom: '1%',
-    //             right: '20%',
-    //             symbolSize: 7,
-    //             label: {
-    //               position: 'left',
-    //               verticalAlign: 'middle',
-    //               align: 'right',
-    //               fontSize: 9
-    //             },
-    //             leaves: {
-    //               label: {
-    //                 position: 'right',
-    //                 verticalAlign: 'middle',
-    //                 align: 'left'
-    //               }
-    //             },
-    //             emphasis: {
-    //               focus: 'descendant'
-    //             },
-    //             expandAndCollapse: true,
-    //             animationDuration: 550,
-    //             animationDurationUpdate: 750
-    //           }
-    //         ]
-    //       })
-    //   );
-    // });
-    // option && lineChart.setOption(option);
+    var ROOT_PATH =
+        'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples';
+
+    var chartDom = document.getElementById('line');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      backgroundColor: 'rgba(0,0,0,0)',
+      globe: {
+        baseTexture: ROOT_PATH + '/data-gl/asset/world.topo.bathy.200401.jpg',
+        heightTexture: ROOT_PATH + '/data-gl/asset/world.topo.bathy.200401.jpg',
+        displacementScale: 0.04,
+        shading: 'realistic',
+        // environment: ROOT_PATH + '/data-gl/asset/starfield.jpg',
+        realisticMaterial: {
+          roughness: 0.9
+        },
+        postEffect: {
+          enable: true
+        },
+        light: {
+          main: {
+            intensity: 3,
+            shadow: true
+          },
+          ambientCubemap: {
+            // texture: ROOT_PATH + '/data-gl/asset/pisa.hdr',
+            diffuseIntensity: 0.2
+          }
+        }
+      }
+    };
+
+    option && myChart.setOption(option);
 
     var pieDom = document.getElementById('pie');
     let pieChart = echarts.init(pieDom);

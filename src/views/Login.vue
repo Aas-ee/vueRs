@@ -159,12 +159,14 @@
 </template>
 
 <script>
+import qs from 'qs'
+
+
 export default {
   name: "Login",
   data() {
     return {
       user: {
-        id:"",
         username: "",
         password: "",
       },
@@ -184,8 +186,8 @@ export default {
     login() {
       this.$refs['userForm'].validate((valid) => { //对表单进行校验，如果结果为false则不发送请求
         if (valid) {
-          this.$axios.post("/admin/login", this.user).then((res) => {
-            if (res) {
+          this.$axios.post("/admin/login", qs.stringify(this.user)).then((res) => {
+            if (res.data.code == 200) {
               // localStorage.setItem   res.data
               localStorage.setItem("user", JSON.stringify(this.user.username)) //将获取到的用户信息保存在浏览器上
 
@@ -194,9 +196,9 @@ export default {
               // this.$router.push(this.$router.query.topath)
               this.$message.success("登录成功")
             } else {
-              this.$message.error("系统错误")
+              this.$message.error(res.data.msg)
             }
-          })
+          }).catch((err)=>{this.$message.error("系统异常")})
         }
       });
     },
