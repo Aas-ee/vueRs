@@ -166,14 +166,18 @@ export default {
         this.$axios.post("/post/getById", qs.stringify(data)).then(res => {
           if (res) {
             this.tableData2 = res.data.rows
-            this.$message.success('搜索成功')
+            if (this.tableData2[0] == null){
+              this.$message.error('搜索失败,查无此人')
+              this.load()
+            }else {
+              this.$message.success('搜索成功')
+            }
           } else {
-            this.$message.error('搜索失败')
+            this.$message.error("系统错误")
           }
         })
       }else {
-        this.$message.error("请输入id搜索")
-        return false
+        this.load()
       }
     }
 
